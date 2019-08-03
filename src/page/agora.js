@@ -96,7 +96,7 @@ class AgoraRTCView extends Component<Props> {
   state = {
     peerIds: [],
     joinSucceed: false,
-    isMute: false,
+    isMute: true,
     hideButton: false,
     visible: false,
     selectedUid: undefined,
@@ -339,12 +339,6 @@ class AgoraRTCView extends Component<Props> {
         style={styles.container}
       >
         <AgoraView style={styles.localView} showLocalVideo={true} mode={1} />
-          <View style={styles.absView}>
-            <Text>uid: {this.props.uid}, channelName: {this.props.channelName}, peers: {this.state.peerIds.join(",")}</Text>
-            {this.agoraPeerViews(this.state)}
-            {this.toolBar(this.state)}
-          </View>
-        {this.selectedView(this.state)}
       </Surface>
     )
   }
