@@ -10,4 +10,6 @@ target 'AgoraRNQuickStart' do
 
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
+  pod 'RNViewShot', :path => '../node_modules/react-native-view-shot'
+
 end
