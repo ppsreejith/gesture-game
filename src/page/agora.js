@@ -3,6 +3,8 @@ import {
   StyleSheet, Text, View, TouchableOpacity,
   Dimensions, Modal, NativeModules, Image
 } from 'react-native'
+import ViewShot from "react-native-view-shot";
+import { captureRef, captureScreen } from "react-native-view-shot";
 
 import {Surface, ActivityIndicator} from 'react-native-paper'
 
@@ -100,7 +102,8 @@ class AgoraRTCView extends Component<Props> {
     hideButton: false,
     visible: false,
     selectedUid: undefined,
-    animating: true
+      animating: true,
+      uri: "https://www.jagranjosh.com/imported/images/E/Articles/facts-about-Kalam.jpg"
   }
 
   componentWillMount () {
@@ -222,7 +225,15 @@ class AgoraRTCView extends Component<Props> {
   }
 
   switchCamera = () => {
-    RtcEngine.switchCamera();
+      captureRef(this.agoraRef, {
+          format: "jpg",
+          quality: 0.8
+      })
+          .then(
+              uri => this.setState({uri}),
+              error => console.error("Oops, snapshot failed", error)
+          );
+    //RtcEngine.switchCamera();
   }
 
   toggleAllRemoteAudioStreams = () => {
@@ -338,7 +349,13 @@ class AgoraRTCView extends Component<Props> {
         onPress={this.toggleHideButtons}
         style={styles.container}
       >
-        <AgoraView style={styles.localView} showLocalVideo={true} mode={1} />
+
+            <Image source={{uri:this.state.uri}} style={{width: 400, height: 400}}/>
+            <ViewShot  style={{flex: 1}} options={{ format: "jpg", quality: 0.9 }}>
+            <View ref={ref => {this.agoraRef = ref}} style={{flex: 1}} collapsable={false}>
+            <AgoraView style={styles.localView} showLocalVideo={true} mode={1} />
+            </View>
+            </ViewShot>
           <View style={styles.absView}>
             <Text>uid: {this.props.uid}, channelName: {this.props.channelName}, peers: {this.state.peerIds.join(",")}</Text>
             {this.agoraPeerViews(this.state)}
